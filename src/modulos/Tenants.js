@@ -7,5 +7,5 @@ const tenantSchema=new mongoose.Schema({
 
 },{versionKey:false});
 
-const tenant=mongoose.model("tenant",tenantSchema);
+const tenant=mongoose.model("tenants",tenantSchema);
 export default tenant;
