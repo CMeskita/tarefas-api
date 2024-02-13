@@ -1,8 +1,9 @@
 import tarefas from "../modulos/Tarefas.js"
+import tenants from "../modulos/Tenants.js"
 
 class TarefaController{
 
-    static async listarTarefas(req,res)
+ static async listarTarefas(req,res)
     {
        try {
         const listarTarefas= await tarefas.find({});
@@ -11,7 +12,8 @@ class TarefaController{
         res.status(500).json({message:`${error.message} - falha na Requisição`});
        }
     };
-    static async cadastraTarefas(req,res)
+    
+static async cadastraTarefas(req,res)
 {
    const novaTarefa=req.body;
 
@@ -27,6 +29,7 @@ static async tarefaporTenant(req,res)
 {
    const tenant=req.query.tenant;
    try {
+      //const tenantExiste=await tenants.find({descricao:descricao});
       const tarefaporTenant=await tarefas.find({tenant:tenant});
         
       res.status(200).json(tarefaporTenant);

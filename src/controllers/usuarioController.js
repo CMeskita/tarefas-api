@@ -139,8 +139,7 @@ static async loginUsuario(req,res)
             return res.status(404).json({ msg: "Usuário não encontrado!" });
          }
 
-         const checkPassword = bcrypt.compare(senhahas, usuarioExiste.senhaHas);
-         if (!checkPassword) {
+         if (senhahas!=usuarioExiste.senhaHas) {
             return res.status(422).json({ msg: "Senha inválida" });
          }
     try {
@@ -148,7 +147,7 @@ static async loginUsuario(req,res)
          {
              email: usuarioExiste.email,
              nome: usuarioExiste.nome,
-             tenant:criaHash(usuarioExiste.tenant.toString())
+             tenant:usuarioExiste.tenant
          
          }, chaveSecreta
      );  
