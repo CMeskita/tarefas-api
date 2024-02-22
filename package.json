@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "type": "module",
-  "outDir":"./dist",
   "rootDir":"./src",
   "scripts": {
     "dev": "nodemon server.js",
