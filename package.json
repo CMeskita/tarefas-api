@@ -2,8 +2,9 @@
   "name": "tarefas-api",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "type": "module",
+  "outDist": "./dist",
   "rootDir": "./src",
   "scripts": {
     "build": "node server.js",
