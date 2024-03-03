@@ -1,5 +1,5 @@
 import tarefas from "../modulos/Tarefas.js"
-import tenants from "../modulos/Tenants.js"
+
 
 class TarefaController{
 
@@ -11,8 +11,17 @@ class TarefaController{
        } catch (error) {
         res.status(500).json({message:`${error.message} - falha na Requisição`});
        }
-    };
-    
+};
+static async listarTarefaId(req,res)
+{
+   try {
+    const id=req.params.id;
+    const getTarefa = await tarefas.findById(id);
+    res.status(200).json(getTarefa);
+   } catch (error) {
+    res.status(500).json({message:`${error.message} - falha na Requisição`});
+   }
+};    
 static async cadastraTarefas(req,res)
 {
    const novaTarefa=req.body;
