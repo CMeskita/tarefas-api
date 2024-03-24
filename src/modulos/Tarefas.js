@@ -11,6 +11,9 @@ const tarefaSchema=new mongoose.Schema({
     sab:{type:Boolean},
     dom:{type:Boolean},
     tenant:{type:Number},
+    active:{type:Boolean},
+    shared:{type:Boolean}
+
 
 },{versionKey:false});
 

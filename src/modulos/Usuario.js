@@ -7,6 +7,7 @@ const usuarioSchema=new mongoose.Schema({
     senhaHas:{type:String},
     registro:{type:String},
     tenant:{type:Number},
+    admin:{type:Boolean}
 
 },{versionKey:false});
 
