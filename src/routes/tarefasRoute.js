@@ -7,8 +7,7 @@ const routes=express.Router();
 
 routes.get("/tarefas",TarefaController.listarTarefas);
 routes.get("/tarefas/tenant",TarefaController.tarefaporTenant);
-//routes.get("/tarefas/:id",TarefaController.listarAutoresId);
 routes.post("/tarefas",TarefaController.cadastraTarefas);
-//routes.put("/tarefas/:id",TarefaController.AlterarAutor);
-//routes.delete("/tarefas/:id",TarefaController.DeletarAutor);
+routes.put("/tarefas/:id",TarefaController.alterarTarefa);
+//routes.delete("/tarefas/:id",TarefaController.DeletarTarefa);
 export default routes;
