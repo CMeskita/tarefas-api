@@ -46,6 +46,19 @@ static async tarefaporTenant(req,res)
     res.status(500).json({message:`${error.message} - falha de requisição`});
    }
 }
+
+static async tarefaporTenantShared(req,res)
+{
+   const tenant=req.query.tenant;
+   try {
+   
+      const tarefaporTenant=await tarefas.find({tenant:tenant}&&{active:true}&&{shared:true});
+        
+      res.status(200).json(tarefaporTenant);
+   } catch (error) {
+    res.status(500).json({message:`${error.message} - falha de requisição`});
+   }
+}
 static async alterarTarefa(req,res)
 {
    try {
