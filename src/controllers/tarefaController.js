@@ -41,7 +41,7 @@ static async tarefaporTenant(req,res)
    const tenant=req.query.tenant;
    try {
       //const tenantExiste=await tenants.find({descricao:descricao});
-      const tarefaporTenant=await tarefas.find({tenant:tenant}&&{active:true});
+      const tarefaporTenant=(await tarefas.find({tenant:tenant,active:true}));
         
       res.status(200).json(tarefaporTenant);
    } catch (error) {
@@ -51,12 +51,13 @@ static async tarefaporTenant(req,res)
 
 static async tarefaporTenantShared(req,res)
 {
-   const tenant=req.query.tenant;
+   debugger
+   const tenant=req.query.shared;
    try {
    
-      const tarefaporTenant=await tarefas.find({tenant:tenant}&&{active:true}&&{shared:true});
+      const tarefaporTenantShared=await tarefas.find({tenant:tenant,active:true,shared:true});
         
-      res.status(200).json(tarefaporTenant);
+      res.status(200).json(tarefaporTenantShared);
    } catch (error) {
     res.status(500).json({message:`${error.message} - falha de requisição`});
    }

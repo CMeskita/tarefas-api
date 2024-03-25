@@ -43,10 +43,10 @@ static async cadastrarUsuarioCompartilhado(req,res)
     const novoUsuario=req.body;
    try {
      
-       novoUsuario.senhaHas=criaHash(novoUsuario.senhaHas);
-       novoUsuario.registro=new Date().toString();
-       
-    const usuarioCriado = await usuarios.create(novoUsuario);
+         novoUsuario.senhaHas=criaHash(novoUsuario.senhaHas);
+         novoUsuario.registro=new Date().toString();
+        const usuarioCriado = await usuarios.create(novoUsuario);
+
         res.status(201).json({message:"criado com sucesso",usuarios:usuarioCriado});
 
    } catch (error) {
@@ -60,11 +60,11 @@ static async cadastrarUsuario(req,res)
          const novoUsuario=req.body;
          let numeroAleatorio=gerarNumeroAleatorio();
    try {
-      const usuarioExiste = await usuarios.findOne(novoUsuario.email)
-         if (usuarioExiste) {
-            return res.status(409).json({ msg: "Usuário já Cadastrado!" });
-         }
       
+      const usuarioExiste = await usuarios.find(novoUsuario.email)
+        if (usuarioExiste) {
+           return res.status(409).json({ msg: "Usuário já Cadastrado!" });
+        }      
             novoUsuario.senhaHas=criaHash(novoUsuario.senhaHas);
             novoUsuario.registro=new Date().toString();
             novoUsuario.tenant=numeroAleatorio;
