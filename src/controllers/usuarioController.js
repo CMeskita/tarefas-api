@@ -55,8 +55,7 @@ static async cadastrarUsuarioCompartilhado(req,res)
    } catch (error) {
     res.status(500).json({message:`${error.message} - falha ao cadastrar o Usuário`});
    }
-    
-    
+       
 };
 static async cadastrarUsuario(req,res)
 {        
@@ -64,6 +63,10 @@ static async cadastrarUsuario(req,res)
          const novoUsuario=req.body;
          let numeroAleatorio=gerarNumeroAleatorio();
    try {
+      const usuarioExiste = await usuarios.findOne(novoUsuario.email)
+         if (usuarioExiste) {
+            return res.status(409).json({ msg: "Usuário já Cadastrado!" });
+         }
       if (novoUsuario.senhaHas != novoUsuario.confirmsenhaHas) {
          return res
            .status(422)
@@ -159,8 +162,5 @@ static async loginUsuario(req,res)
     }
    }
 }
-
-
-
 
 export default UsuarioController;

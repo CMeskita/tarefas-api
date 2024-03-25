@@ -39,7 +39,7 @@ static async tarefaporTenant(req,res)
    const tenant=req.query.tenant;
    try {
       //const tenantExiste=await tenants.find({descricao:descricao});
-      const tarefaporTenant=await tarefas.find({tenant:tenant});
+      const tarefaporTenant=await tarefas.find({tenant:tenant}&&{active:true});
         
       res.status(200).json(tarefaporTenant);
    } catch (error) {
