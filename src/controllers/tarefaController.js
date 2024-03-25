@@ -28,6 +28,8 @@ static async cadastraTarefas(req,res)
 
    try {
  
+      novaTarefa.active=true,
+      novaTarefa.shared=false
       const tarefaCriada=await tarefas.create(novaTarefa);
     res.status(201).json({messag:"criado com sucesso",tarefas:tarefaCriada});
    } catch (error) {

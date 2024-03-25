@@ -40,16 +40,13 @@ static async usuarioporEmail(req,res)
 }
 static async cadastrarUsuarioCompartilhado(req,res)
 {        
-         const novoUsuario=req.body;
+    const novoUsuario=req.body;
    try {
-      if (novoUsuario.senhaHas != novoUsuario.confirmsenhaHas) {
-         return res
-           .status(422)
-           .json({ message: "A senha e a confirmação precisam ser iguais!" });
-       }
+     
        novoUsuario.senhaHas=criaHash(novoUsuario.senhaHas);
        novoUsuario.registro=new Date().toString();
-      const usuarioCriado = await usuarios.create(novoUsuario);
+       
+    const usuarioCriado = await usuarios.create(novoUsuario);
         res.status(201).json({message:"criado com sucesso",usuarios:usuarioCriado});
 
    } catch (error) {
@@ -67,17 +64,15 @@ static async cadastrarUsuario(req,res)
          if (usuarioExiste) {
             return res.status(409).json({ msg: "Usuário já Cadastrado!" });
          }
-      if (novoUsuario.senhaHas != novoUsuario.confirmsenhaHas) {
-         return res
-           .status(422)
-           .json({ message: "A senha e a confirmação precisam ser iguais!" });
-       }
-       novoUsuario.senhaHas=criaHash(novoUsuario.senhaHas);
-       novoUsuario.registro=new Date().toString();
-       novoUsuario.tenant=numeroAleatorio;
+      
+            novoUsuario.senhaHas=criaHash(novoUsuario.senhaHas);
+            novoUsuario.registro=new Date().toString();
+            novoUsuario.tenant=numeroAleatorio;
+            novoUsuario.admin=true;
+
        const usuarioCriado = await usuarios.create(novoUsuario);
 
-         const novoTenant=new tenant({
+       const novoTenant=new tenant({
          descricao:criaHash(numeroAleatorio.toString()),
          tenant:numeroAleatorio
      })
@@ -88,9 +83,7 @@ static async cadastrarUsuario(req,res)
 
    } catch (error) {
     res.status(500).json({message:`${error.message} - falha ao cadastrar o Usuário`});
-   }
-    
-    
+   }       
 };
 static async alterarUsuario(req,res)
 {
