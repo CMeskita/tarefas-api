@@ -2,6 +2,7 @@ import express from "express";
 import tarefas from "./tarefasRoute.js"
 import usuarios from "./usuarioRoutes.js"
 import tenants from "./tenantsRoute.js";
+import codigos from "./codigoRoutes.js";
 //import swaggerUi from "swagger-ui-express";
 
 //app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -10,7 +11,7 @@ const routes=(app)=>{
     debugger;
     app.route("/").get((req,res)=>res.status(200).send("Chamando o index da Rota"));
     //app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-    app.use(express.json(),tarefas,usuarios,tenants);
+    app.use(express.json(),tarefas,usuarios,tenants,codigos);
 
 };
 export default routes; 
