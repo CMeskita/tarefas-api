@@ -3,7 +3,6 @@ import usuarios from "../modulos/Usuario.js";
 import {chaveSecreta ,criaHash} from '../utilities/token.js';
 import {gerarNumeroAleatorio} from '../utilities/gerarCodigo.js';
 import jwt from 'jsonwebtoken';
-import * as bcrypt  from 'bcrypt';
 import tenant from "../modulos/Tenants.js";
 
 class UsuarioController{
@@ -34,6 +33,8 @@ static async usuarioporEmail(req,res)
       const usuarioporEmail=await usuarios.find({email:email});
         
       res.status(200).json(usuarioporEmail);
+
+      
    } catch (error) {
     res.status(500).json({message:`${error.message} - falha de requisição`});
    }
@@ -60,11 +61,6 @@ static async cadastrarUsuario(req,res)
          const novoUsuario=req.body;
          let numeroAleatorio=gerarNumeroAleatorio();
    try {
-      
-      const usuarioExiste = await usuarios.find(novoUsuario.email)
-        if (usuarioExiste) {
-           return res.status(409).json({ msg: "Usuário já Cadastrado!" });
-        }      
             novoUsuario.senhaHas=criaHash(novoUsuario.senhaHas);
             novoUsuario.registro=new Date().toString();
             novoUsuario.tenant=numeroAleatorio;
@@ -77,8 +73,7 @@ static async cadastrarUsuario(req,res)
          tenant:numeroAleatorio
      })
      const tenantCriado = await tenant.create(novoTenant);
-     
-     
+
         res.status(201).json({message:"criado com sucesso",usuarios:usuarioCriado,tenant:tenantCriado});
 
    } catch (error) {
@@ -120,6 +115,7 @@ static async reseteSenhaUsuario(req,res)
 }
 static async loginUsuario(req,res)
 { 
+   const respose="";
   
    const {senhaHas, email}=req.body
          if (!email) {
@@ -129,10 +125,11 @@ static async loginUsuario(req,res)
          if (!senhaHas) {
             return res.status(422).json({ msg: "A senha é obrigatória!" });
          }
-   const senhahas=criaHash(senhaHas);
-   const usuarioExiste = await usuarios.findOne({email:email})
-         if (!usuarioExiste) {
-            return res.status(404).json({ msg: "Usuário não encontrado!" });
+            const senhahas=criaHash(senhaHas);
+            const usuarioExiste = await usuarios.findOne({email:email})
+               if (!usuarioExiste) {
+         
+            return res.status(404).json({ msg: "Usuário não encontrado!" });;
          }
 
          if (senhahas!=usuarioExiste.senhaHas) {
@@ -148,8 +145,9 @@ static async loginUsuario(req,res)
          }, chaveSecreta
      );  
      usuarioExiste.token=token;
+  
 
-      res.status(200).json({token:token });
+      res.status(200).json({token:token});
     } catch (error) {
       res.status(500).json({ msg: error });
     }

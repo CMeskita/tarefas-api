@@ -20,6 +20,21 @@ static async listarCodigoId(req,res)
     res.status(500).json({message:`${error.message} - falha na Requisição`});
    }
 };
+static async codigoporTenant(req,res)
+{
+   debugger;
+ 
+  const tenant=req.query.tenant;
+   try {
+      const usuarioporTenant=await codigos.find({tenant:tenant});
+       
+         res.status(200).json(usuarioporTenant);
+        
+   } catch (error) {
+    res.status(500).json({message:`${error.message} - falha de requisição`});
+   }
+}
+
 
 static async cadastrarCodigo(req,res)
 {    debugger;    
