@@ -5,6 +5,7 @@ const codigoSchema=new mongoose.Schema({
     codigo:{type:String},
     tenant:{type:Number},    
     informacoes:{type:String},
+    active:{type:Boolean}
 
 },{versionKey:false});
 
