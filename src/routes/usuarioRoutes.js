@@ -9,6 +9,7 @@ routes.get("/usuarios/:id",UsuarioController.listarUsuarioId);
 routes.post("/usuarios",UsuarioController.cadastrarUsuario);
 routes.post("/usuarios/shared",UsuarioController.cadastrarUsuarioCompartilhado);
 routes.post("/usuarios/login",UsuarioController.loginUsuario);
+routes.post("/usuarios/email",UsuarioController.recuperaSenhaUsuario);
 routes.put("/usuarios/:id",UsuarioController.alterarUsuario);
 
 export default routes;

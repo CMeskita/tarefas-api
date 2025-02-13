@@ -1,9 +1,12 @@
 
 import usuarios from "../modulos/Usuario.js";
 import {chaveSecreta ,criaHash} from '../utilities/token.js';
-import {gerarNumeroAleatorio} from '../utilities/gerarCodigo.js';
+import {gerarCodigos, gerarNumeroAleatorio} from '../utilities/gerarCodigo.js';
 import jwt from 'jsonwebtoken';
 import tenant from "../modulos/Tenants.js";
+import sendEmail from '../utilities/emailService.js'; 
+
+
 
 class UsuarioController{
 
@@ -112,6 +115,28 @@ static async reseteSenhaUsuario(req,res)
  } catch (error) {
    res.status(500).json({ msg: error });
  }
+}
+static async recuperaSenhaUsuario(req,res)
+{
+  debugger;
+  const {email}=req.body
+
+  try {
+    const userExists=await usuarios.find({email:email});
+    if (!userExists) {
+      return res.status(422).json({ msg: "O email Não Existe!" });
+    }
+    debugger;
+    const cod = gerarCodigos();
+    const subject = 'Recuperar Senha Cod:src';
+    const text = `Seu código de recuperação é: ${cod}`;
+  
+
+ await sendEmail(email, subject, text);
+    res.status(200).json({ msg: "Email enviado com sucesso!" + cod + " - " + email }); 
+  } catch (error) {
+    res.status(500).json({ msg: "Email Não enviado! - Erro:" + error });
+  }
 }
 static async loginUsuario(req,res)
 { 
