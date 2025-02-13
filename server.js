@@ -6,5 +6,5 @@ debugger;
 const PORT = 3000;
 
 app.listen(PORT, () => {
-  console.log("http://localhost:3000");
+  console.log("Servidor rodando em https://srchpassword.vercel.app/");
 });
