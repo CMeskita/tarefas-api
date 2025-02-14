@@ -5,6 +5,7 @@ import {gerarCodigos, gerarNumeroAleatorio} from '../utilities/gerarCodigo.js';
 import jwt from 'jsonwebtoken';
 import tenant from "../modulos/Tenants.js";
 import sendEmail from '../utilities/emailService.js'; 
+import senhas from "../modulos/Senhas.js";
 
 
 
@@ -83,6 +84,20 @@ static async cadastrarUsuario(req,res)
     res.status(500).json({message:`${error.message} - falha ao cadastrar o Usuário`});
    }       
 };
+static async cadastrarSenhas(req,res)
+{        
+         //const {email,nome,senhaHas,confirmsenhaHas,registro}=req.body;
+         const novoSenha=req.body;
+         
+   try {
+            
+       const usuarioCriado = await usuarios.create(novoSenha);
+       res.status(201).json({message:"criado com sucesso",usuarios:usuarioCriado});
+
+   } catch (error) {
+    res.status(500).json({message:`${error.message} - falha ao cadastrar o Usuário`});
+   }       
+};
 static async alterarUsuario(req,res)
 {
    try {
@@ -95,23 +110,24 @@ static async alterarUsuario(req,res)
 };
 static async reseteSenhaUsuario(req,res)
 {
-   const {email, password, confirmpassword } = req.body;
-   if (!email) {
-      return res.status(422).json({ msg: "O email é obrigatório!" });
-    }
-    if (!password) {
-      return res.status(422).json({ msg: "A senha é obrigatória!" });
-    }
-    if (password != confirmpassword) {
-      return res.status(422).json({ msg: "A senha e a confirmação precisam ser iguais!" });
-    }
-    const userExists = await User.findOne({ email: email });
-    const passwordHash = await criaHash(password);
+   const {email,codigo,password}=req.body;
+   try {
+    const senhaExists = await senhas.findOne({ email: email });
+      if (!senhaExists) {
+         return res.status(404).json({ msg: "Usuário não encontrado!" });
+      }
+      if (senhaExists.codigo != codigo) {
+         return res.status(422).json({ msg: "Código inválido!" });
+      }
+    const usuarioExiste = await usuarios.findOne({ email: email });
+          usuarioExiste.senhaHas=criaHash(password);
 
-  try {
-   await usuarios.save();
+    const usuárioAlterado=await usuarios.findByIdAndUpdate(usuarioExiste._id,usuarioExiste);
+   
+    await senhas.findByIdAndDelete(senhaExists._id);
 
-   res.status(201).json({ msg: "Usuário criado com sucesso!" });
+   res.status(200).json({ msg: "Senha alterada com sucesso!"});
+
  } catch (error) {
    res.status(500).json({ msg: error });
  }
@@ -133,7 +149,11 @@ static async recuperaSenhaUsuario(req,res)
   
 
  await sendEmail(email, subject, text);
-    res.status(200).json({ msg: "Email enviado com sucesso!" + cod + " - " + email }); 
+  
+ const senhaUsuario={email:email,codigo:cod};
+ await senhas.create(senhaUsuario);
+
+    res.status(200).json({ msg: "Email enviado com sucesso! " + cod}); 
   } catch (error) {
     res.status(500).json({ msg: "Email Não enviado! - Erro:" + error });
   }
