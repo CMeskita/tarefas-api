@@ -110,24 +110,21 @@ static async alterarUsuario(req,res)
 };
 static async reseteSenhaUsuario(req,res)
 {
-   const {email,codigo,password}=req.body;
+   debugger;
+   const {email,codigo,senhaHas}=req.body
    try {
-    const senhaExists = await senhas.findOne({ email: email });
+      const userExists=await usuarios.find({email:email});
+      if (!userExists) {
+        return res.status(422).json({ msg: "O email Não Existe!" });
+      }
+      const senhaExists=await senhas.find({email:email,codigo:codigo});
       if (!senhaExists) {
-         return res.status(404).json({ msg: "Usuário não encontrado!" });
+        return res.status(422).json({ msg: "O código Não Existe!" });
       }
-      if (senhaExists.codigo != codigo) {
-         return res.status(422).json({ msg: "Código inválido!" });
-      }
-    const usuarioExiste = await usuarios.findOne({ email: email });
-          usuarioExiste.senhaHas=criaHash(password);
-
-    const usuárioAlterado=await usuarios.findByIdAndUpdate(usuarioExiste._id,usuarioExiste);
-   
-    await senhas.findByIdAndDelete(senhaExists._id);
-
-   res.status(200).json({ msg: "Senha alterada com sucesso!"});
-
+      const senhahas=criaHash(senhaHas);
+      await usuarios.findOneAndUpdate({email:email},{senhaHas:senhahas});
+      await senhas.findOneAndDelete({email:email,codigo:codigo});
+      res.status(200).json({ msg: "Senha Alterada com sucesso!" });
  } catch (error) {
    res.status(500).json({ msg: error });
  }
@@ -142,18 +139,26 @@ static async recuperaSenhaUsuario(req,res)
     if (!userExists) {
       return res.status(422).json({ msg: "O email Não Existe!" });
     }
+    const senhaExists=await senhas.find({email:email});
+      await senhas.findOneAndDelete({id:senhaExists.id});
+
     debugger;
     const cod = gerarCodigos();
     const subject = 'Recuperar Senha Cod:src';
     const text = `Seu código de recuperação é: ${cod}`;
-  
 
- await sendEmail(email, subject, text);
-  
  const senhaUsuario={email:email,codigo:cod};
  await senhas.create(senhaUsuario);
+try {
+   await sendEmail(email, subject, text);
+   res.status(200).json({ msg: "Email enviado com sucesso! " + cod}); 
+} catch (error) {
+   
+   res.status(500).json({ msg: "Email Não enviado! - Erro:" + error });
+}
 
-    res.status(200).json({ msg: "Email enviado com sucesso! " + cod}); 
+
+   
   } catch (error) {
     res.status(500).json({ msg: "Email Não enviado! - Erro:" + error });
   }

@@ -37,7 +37,6 @@ routes.get("/codigos",CodigoController.listarcodigos);
  *   get:
  *     summary: Retrieve codes by tenant
  *     description: Retrieve a list of codes filtered by tenant.
- *     tags: [Códigos]
  *     responses:
  *       200:
  *         description: A list of codes filtered by tenant.
@@ -66,7 +65,6 @@ routes.get("/codigos/tenant",CodigoController.codigoporTenant);
  *   get:
  *     summary: Retrieve a code by ID
  *     description: Retrieve a single code by its ID.
- *     tags: [Códigos]
  *     parameters:
  *       - in: path
  *         name: id
@@ -99,7 +97,6 @@ routes.get("/codigos/:id",CodigoController.listarCodigoId);
  *   post:
  *     summary: Create a new code
  *     description: Create a new code and store it in the database.
- *     tags: [Códigos]
  *     requestBody:
  *       required: true
  *       content:
@@ -136,7 +133,6 @@ routes.post("/codigos",CodigoController.cadastrarCodigo);
  *   put:
  *     summary: Update a code by ID
  *     description: Update a single code by its ID.
- *     tags: [Códigos]
  *     parameters:
  *       - in: path
  *         name: id

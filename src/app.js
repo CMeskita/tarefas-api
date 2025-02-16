@@ -8,7 +8,6 @@ import cors from 'cors';
 
 
 const conexao = await DataBaseTarefas();
-//const swaggerDocument=process.env.SWAGGER_FILE || "./swagger.json";
 debugger;
 
 conexao.on("Error",(erro)=>{
@@ -44,7 +43,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: 'https://srchpassword.vercel.app/',
+      url: 'http://localhost:2603/',
       description: 'Development server',
     },
   ],
