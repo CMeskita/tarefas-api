@@ -1,5 +1,5 @@
 # tarefas-api
-Api Simples com cadastrao para criar tarefas do dia a dia e Senhas com mais facilidade tem duas Aplicações distintas [Tarefas-app]() e [PassWodCode]()
+Api Simples com cadastrao para criar tarefas do dia a dia e Senhas com mais facilidade tem duas Aplicações distintas [Tarefas-app]() e [PassWordCode]()
  - Cadastro de usuario
  - Geração de Token JWT
  - Grud (Tarefas, Usuários, Códigos e passwords)
