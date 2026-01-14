@@ -8,33 +8,33 @@ import sendEmail from '../utilities/emailService.js';
 import senhas from "../modulos/Senhas.js";
 
 
-
+//------------------Controller Usuario------------------//
 class UsuarioController{
 
-static async listarUsuario(req,res)
-    {
-       try {
-        const listarUsuarios= await usuarios.find({});
-        res.status(200).json(listarUsuarios);
-       } catch (error) {
-        res.status(500).json({message:`${error.message} - falha na Requisição`});
-       }
-};
-static async listarUsuarioId(req,res)
-{
-   try {
-    const id=req.params.id;
-    const getUsuario = await usuarios.findById(id);
-    res.status(200).json(getUsuario);
-   } catch (error) {
-    res.status(500).json({message:`${error.message} - falha na Requisição`});
-   }
-};
+static async listarUsuario(req, res) {
+    try {
+      const usuarios = await Usuario.find();
+      res.status(200).json(usuarios);
+    } catch (error) {
+      res.status(500).json({ msg: error.message });
+    }
+  }
+  static async listarUsuarioId(req, res) {
+    try {
+      const usuario = await Usuario.findById(req.params.id);
+      if (!usuario) {
+        return res.status(404).json({ msg: "Usuário não encontrado" });
+      }
+      res.status(200).json(usuario);
+    } catch (error) {
+      res.status(500).json({ msg: error.message });
+    }
+  }
 static async usuarioporEmail(req,res)
 {
    const email=req.query.email;
    try {
-      const usuarioporEmail=await usuarios.find({email:email});
+      const usuarioporEmail=await usuarios.findOne({email:email});
         
       res.status(200).json(usuarioporEmail);
 
@@ -66,7 +66,7 @@ static async cadastrarUsuario(req,res)
          let numeroAleatorio=gerarNumeroAleatorio();
    try {
             novoUsuario.senhaHas=criaHash(novoUsuario.senhaHas);
-            novoUsuario.registro=new Date().toString();
+            novoUsuario.registro=new Date();
             novoUsuario.tenant=numeroAleatorio;
             novoUsuario.admin=true;
 
@@ -110,7 +110,7 @@ static async alterarUsuario(req,res)
 };
 static async reseteSenhaUsuario(req,res)
 {
-   debugger;
+  // debugger;
    const {email,codigo,senhaHas}=req.body
    try {
       const userExists=await usuarios.find({email:email});
@@ -131,7 +131,7 @@ static async reseteSenhaUsuario(req,res)
 }
 static async recuperaSenhaUsuario(req,res)
 {
-  debugger;
+ // debugger;
   const {email}=req.body
 
   try {
@@ -142,7 +142,7 @@ static async recuperaSenhaUsuario(req,res)
     const senhaExists=await senhas.find({email:email});
       await senhas.findOneAndDelete({id:senhaExists.id});
 
-    debugger;
+   // debugger;
     const cod = gerarCodigos();
     const subject = 'Recuperar Senha Cod:src';
     const text = `Seu código de recuperação é: ${cod}`;

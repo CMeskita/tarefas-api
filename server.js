@@ -1,7 +1,7 @@
 import app from "./src/app.js"
 
 
-debugger;
+//debugger;
 
 const PORT = `${process.env.PORT}`;
 

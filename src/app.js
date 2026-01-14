@@ -8,7 +8,7 @@ import cors from 'cors';
 
 
 const conexao = await DataBaseTarefas();
-debugger;
+//debugger;
 
 conexao.on("Error",(erro)=>{
   console.error("Erro de conexao",erro);
@@ -43,7 +43,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: 'http://localhost:2603/',
+      url: 'https://tarefas-api.vercel.app/',
       description: 'Development server',
     },
   ],
